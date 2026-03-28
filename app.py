@@ -1,50 +1,68 @@
 import streamlit as st
-import openai
-import os
+from openai import OpenAI
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Load API key securely from Streamlit secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.set_page_config(page_title="AI Code Review Assistant", layout="centered")
 
 st.title("🤖 Code Review Assistant")
 st.write("Get quick AI feedback on your code before submitting for review.")
 
+# Input box
 code = st.text_area("Paste your code here", height=250)
+
+# Language selector (nice upgrade)
+language = st.selectbox(
+    "Select Language",
+    ["Java", "Python", "JavaScript", "SQL", "Other"]
+)
 
 if st.button("Review Code"):
     if not code.strip():
         st.warning("Please enter some code.")
     else:
         prompt = f"""
-        You are a senior software engineer reviewing a short code snippet.
+You are a senior software engineer reviewing a short code snippet.
 
-        Analyze the code for:
-        1. Readability
-        2. Structure
-        3. Maintainability
+Analyze the following {language} code for:
+1. Readability
+2. Structure
+3. Maintainability
 
-        Output format:
+Output format:
 
-        ✅ Positive Note:
-        - 1 good thing
+✅ Positive Note:
+- 1 good thing
 
-        ⚠️ Improvements:
-        1. ...
-        2. ...
-        3. ...
+⚠️ Improvements:
+1. ...
+2. ...
+3. ...
 
-        💡 Suggested Fix (optional):
+💡 Suggested Fix (optional):
 
-        Code:
-        {code}
-        """
+Keep feedback concise and practical.
 
-        with st.spinner("Analyzing..."):
-            response = openai.ChatCompletion.create(
-                model="gpt-4o-mini",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.3
-            )
+Code:
+{code}
+"""
 
-        st.success("Done!")
-        st.markdown(response['choices'][0]['message']['content'])
+        try:
+            with st.spinner("Analyzing..."):
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.3
+                )
+
+            result = response.choices[0].message.content
+
+            st.success("Done!")
+            st.markdown(result)
+
+        except Exception as e:
+            st.error("Something went wrong while analyzing the code.")
+            st.exception(e)
