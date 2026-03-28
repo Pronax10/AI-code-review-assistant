@@ -1,15 +1,21 @@
 import streamlit as st
-from google import genai
+import os
+from google.ai import generativeai
 
-# Initialize Gemini client
-client = genai.Client()
+# Load your API key from Streamlit secrets or environment
+API_KEY = st.secrets.get("GOOGLE_API_KEY") or os.getenv("GOOGLE_API_KEY")
 
-st.set_page_config(page_title="AI Code Review Assistant", layout="centered")
-st.title("🤖 Code Review Assistant (Gemini)")
+if not API_KEY:
+    st.error("Google API key not configured.")
+    st.stop()
+
+generativeai.configure(api_key=API_KEY)
+
+st.set_page_config(page_title="AI Code Review Assistant (Gemini)", layout="centered")
+st.title("🤖 Code Review Assistant (Google Gemini)")
 st.write("Get quick AI feedback on your code before submitting for review.")
 
 code = st.text_area("Paste your code here", height=250)
-
 language = st.selectbox("Select Language", ["Java", "Python", "JavaScript", "SQL", "Other"])
 
 if st.button("Review Code"):
@@ -17,7 +23,7 @@ if st.button("Review Code"):
         st.warning("Please enter some code.")
     else:
         prompt = f"""
-You are a senior software engineer reviewing a short code snippet in {language}.
+You are a senior software engineer reviewing a short {language} code snippet.
 
 Analyze the code for:
 1. Readability
@@ -25,26 +31,25 @@ Analyze the code for:
 3. Maintainability
 
 Output:
-- 1 positive note
-- 3 improvements
-- optional refactor suggestions
+- 1 positive comment
+- 3 specific improvements
+- optional refactor suggestion
 
 Code:
 {code}
 """
 
         try:
-            with st.spinner("Analyzing..."):
-                response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=prompt
+            with st.spinner("Analyzing with Gemini..."):
+                response = generativeai.generate_text(
+                    model="gemini-prototype-1.0",  # example model name
+                    prompt=prompt,
+                    max_output_tokens=512
                 )
 
-            result = response.text
-
             st.success("Done!")
-            st.markdown(result)
+            st.markdown(response.text)
 
         except Exception as e:
-            st.error("There was an issue with the Gemini API.")
+            st.error("Error using Gemini API")
             st.exception(e)
