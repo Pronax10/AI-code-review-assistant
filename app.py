@@ -1,54 +1,33 @@
 import streamlit as st
-from openai import OpenAI
+from google import genai
 
-# Load API key securely from Streamlit secrets
-try:
-    api_key = st.secrets["OPENAI_API_KEY"]
-except KeyError:
-    st.error("API key not found. Please configure secrets.")
-    st.stop()
-
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+# Initialize Gemini client
+client = genai.Client()
 
 st.set_page_config(page_title="AI Code Review Assistant", layout="centered")
-
-st.title("🤖 Code Review Assistant")
+st.title("🤖 Code Review Assistant (Gemini)")
 st.write("Get quick AI feedback on your code before submitting for review.")
 
-# Input box
 code = st.text_area("Paste your code here", height=250)
 
-# Language selector (nice upgrade)
-language = st.selectbox(
-    "Select Language",
-    ["Java", "Python", "JavaScript", "SQL", "Other"]
-)
+language = st.selectbox("Select Language", ["Java", "Python", "JavaScript", "SQL", "Other"])
 
 if st.button("Review Code"):
     if not code.strip():
         st.warning("Please enter some code.")
     else:
         prompt = f"""
-You are a senior software engineer reviewing a short code snippet.
+You are a senior software engineer reviewing a short code snippet in {language}.
 
-Analyze the following {language} code for:
+Analyze the code for:
 1. Readability
 2. Structure
 3. Maintainability
 
-Output format:
-
-✅ Positive Note:
-- 1 good thing
-
-⚠️ Improvements:
-1. ...
-2. ...
-3. ...
-
-💡 Suggested Fix (optional):
-
-Keep feedback concise and practical.
+Output:
+- 1 positive note
+- 3 improvements
+- optional refactor suggestions
 
 Code:
 {code}
@@ -56,19 +35,16 @@ Code:
 
         try:
             with st.spinner("Analyzing..."):
-                response = client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "user", "content": prompt}
-                    ],
-                    temperature=0.3
+                response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=prompt
                 )
 
-            result = response.choices[0].message.content
+            result = response.text
 
             st.success("Done!")
             st.markdown(result)
 
         except Exception as e:
-            st.error("Something went wrong while analyzing the code.")
+            st.error("There was an issue with the Gemini API.")
             st.exception(e)
