@@ -42,7 +42,7 @@ if st.button("Review Code"):
         """
 
         try:
-            with st.spinner("Analyzing with Gemini 1.5 Flash..."):
+            with st.spinner("Analyzing with Gemini 2.5 Flash..."):
                 # Initialize the model
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 
