@@ -44,7 +44,7 @@ if st.button("Review Code"):
         try:
             with st.spinner("Analyzing with Gemini 1.5 Flash..."):
                 # Initialize the model
-                model = genai.GenerativeModel("gemini-1.5-flash")
+                model = genai.GenerativeModel("gemini-2.5-flash")
                 
                 # Generate content
                 response = model.generate_content(prompt)
