@@ -60,3 +60,14 @@ if st.button("Review Code"):
 st.sidebar.markdown("## 👋 About")
 st.sidebar.markdown("Built by Ammar Ahmed")
 st.sidebar.link_button("🔗 LinkedIn", "https://www.linkedin.com/in/ammar-ahmed-b9a793179/")
+
+st.markdown("---")
+st.markdown(
+    """
+    <div style='text-align: center'>
+        👨‍💻 Built by Ammar Ahmed <br>
+        🔗 <a href="https://www.linkedin.com/in/YOUR-USERNAME/" target="_blank">LinkedIn Profile</a>
+    </div>
+    """,
+    unsafe_allow_html=True
+)

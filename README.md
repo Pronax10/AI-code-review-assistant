@@ -3,7 +3,7 @@
 A lightweight AI tool that reviews code snippets and provides actionable feedback.
 
 ## 🚀 Live Demo
-👉 https://your-app.streamlit.app
+👉 https://ai-code-review-assistant-5jspk7wauvyzbe5b2ghsgy.streamlit.app/
 
 ## ✨ Features
 - 3 improvement suggestions
@@ -12,13 +12,8 @@ A lightweight AI tool that reviews code snippets and provides actionable feedbac
 - Beginner-friendly feedback
 
 ## 🧠 Prompt Design
-(Explain briefly + link to prompt file)
+prompts/review_prompt.txt
 
 ## 🧪 Example
-(Show input/output)
-
-## ⚙️ Setup
-(steps to run locally)
-
-## 📸 Screenshot
-(image here)
+examples/input_sample.txt
+examples/output_sample.md
