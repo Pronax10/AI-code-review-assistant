@@ -2,6 +2,12 @@ import streamlit as st
 from openai import OpenAI
 
 # Load API key securely from Streamlit secrets
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except KeyError:
+    st.error("API key not found. Please configure secrets.")
+    st.stop()
+
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.set_page_config(page_title="AI Code Review Assistant", layout="centered")
