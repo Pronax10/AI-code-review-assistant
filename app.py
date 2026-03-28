@@ -57,16 +57,12 @@ if st.button("Review Code"):
             st.error("Error communicating with the API.")
             st.exception(e)
 
-st.sidebar.markdown("## 👋 About")
-st.sidebar.markdown("Built by Ammar Ahmed")
-st.sidebar.link_button("🔗 LinkedIn", "https://www.linkedin.com/in/ammar-ahmed-b9a793179/")
 
 st.markdown("---")
 st.markdown(
     """
     <div style='text-align: center'>
         👨‍💻 Built by <a href="https://www.linkedin.com/in/ammar-ahmed-b9a793179/" target="_blank">Ammar Ahmed</a> <br>
-        🔗 
     </div>
     """,
     unsafe_allow_html=True
