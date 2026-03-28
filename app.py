@@ -54,5 +54,9 @@ if st.button("Review Code"):
             st.markdown(response.text)
 
         except Exception as e:
-            st.error("Error communicating with the Gemini API.")
+            st.error("Error communicating with the API.")
             st.exception(e)
+
+st.sidebar.markdown("## 👋 About")
+st.sidebar.markdown("Built by Ammar Ahmed")
+st.sidebar.link_button("🔗 LinkedIn", "https://www.linkedin.com/in/ammar-ahmed-b9a793179/")
