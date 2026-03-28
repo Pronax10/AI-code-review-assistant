@@ -13,11 +13,11 @@ if not API_KEY:
 genai.configure(api_key=API_KEY)
 
 st.set_page_config(page_title="AI Code Review Assistant", layout="centered")
-st.title("🤖 Code Review Assistant (Gemini 1.5 Flash)")
+st.title("🤖 Code Review Assistant")
 st.write("Get quick AI feedback on your code before submitting for review.")
 
 code = st.text_area("Paste your code here", height=250)
-language = st.selectbox("Select Language", ["Python", "Java", "JavaScript", "SQL", "C++", "Other"])
+language = st.selectbox("Select Language", ["Python", "Java", "JavaScript", "SQL", "C++"])
 
 if st.button("Review Code"):
     if not code.strip():
@@ -42,7 +42,7 @@ if st.button("Review Code"):
         """
 
         try:
-            with st.spinner("Analyzing with Gemini 2.5 Flash..."):
+            with st.spinner("Analyzing..."):
                 # Initialize the model
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 
